@@ -47,7 +47,7 @@
   <section class="probootstrap-cover overflow-hidden relative"  style="background-image: url('<?php echo base_url(); ?>assets/template/images/background03.jpg');" data-stellar-background-ratio="0.5"  id="section-home" style="padding: 0">
     <div class="overlay"></div>
     <div class="container">
-      <div class="row align-items-center">
+      <div class="row align-items-center probootstrap-animate">
         <div class="col-md">
           <!-- text based logo -->
           <div class="w3-center">
@@ -58,11 +58,11 @@
               <br>
               Welcomes you for 
             </p>
-            <h2 class="heading mb-2 display-4 font-light probootstrap-animate">Annual Gathering Meet 2K18</h2>
-            <p class="mu-event-date-line" style="background-color: black;color: white;border:1px solid;border-color: white">30th June, 2018 | Pune, Maharashtra</p>
+            <h2 class="heading mb-2 display-4 font-light probootstrap-animate">Annual Gathering Meet 2k18</h2>
+            <p class="mu-event-date-line probootstrap-animate" style="background-color: black;color: white;border:1px solid;border-color: white">30th June, 2018 | Pune, Maharashtra</p>
           </div>         
           <br>
-          <div class="w3-col l12 w3-text-white w3-center w3-padding-bottom">
+          <div class="w3-col l12 w3-text-white w3-center w3-padding-bottom probootstrap-animate">
             <p class="lead mb-5 probootstrap-animate"><span class="fa fa-copyright w3-large"></span> Powered by <a href="http://bizmo-tech.com" class="w3-text-white" target="_blank" style="padding: 0 0 5px 0"> Bizmo Technologies </a>
               <br>
               Sponsored by <span class="w3-text-white">Ar. Dakshata Ranjeet Wagh</span></p>
@@ -71,7 +71,7 @@
           </div> 
 
           <div class="col-md probootstrap-animate">
-            <form action="#" class="probootstrap-form">
+            <form id="register_userForm" class="probootstrap-form">
               <h3><i class="fa fa-edit"></i> Register Here !</h3>
               <br>
               <div class="form-group">
@@ -80,44 +80,91 @@
                     <div class="form-group">
                       <!-- <label for="id_memberName"><i class="fa fa-user-secret"></i> Member Name</label> -->
                       <label for="id_memberName" style="width: 100%;">
-                        <input type="text" required placeholder="Enter your full name here..." name="" id="id_memberName" class="form-control" style="width: 100%;">
+                        <input type="text" required placeholder="Enter your full name here *" name="memberName" id="id_memberName" class="form-control" style="width: 100%;">
                       </label>
                     </div>
                   </div>
 
                   <div class="col-md-6 w3-margin-bottom">                    
                     <div class="form-group">
-                      <label for="id_seatConfirm"><i class="fa fa-check-square"></i> Seat Confirmation</label>
+                      <label for="id_seatConfirm"><i class="fa fa-check-square"></i> Seat Confirmation <b class="w3-text-red">*</b></label>
                       <label for="id_seatConfirm" style="width: 100%;">
-                        <label for="id_seatConfirmYes" class="mr-5"><input required type="radio" id="id_seatConfirmYes" name="seatConfirm">  Yes</label>
-                        <label for="id_seatConfirmNo"><input required type="radio" id="id_seatConfirmNo" name="seatConfirm">  No</label>
+                        <label for="id_seatConfirmYes" class="mr-5"><input required type="radio" value="yes" id="id_seatConfirmYes" name="seatConfirm">  Yes</label>
+                        <label for="id_seatConfirmNo"><input required type="radio" value="no" id="id_seatConfirmNo" name="seatConfirm">  No</label>
                       </label>
                     </div>
                   </div>
 
                   <div class="col-md-6 w3-margin-bottom">
                     <div class="form-group">
-                      <label for="id_foodRef"><i class="fa fa-glass"></i> Food Reference</label>
+                      <label for="id_foodRef"><i class="fa fa-glass"></i> Food Reference <b class="w3-text-red">*</b></label>
                       <label for="id_foodRef" style="width: 100%;">
-                        <label for="id_foodRefVeg" class="mr-5"><input required type="radio" id="id_foodRefVeg" name="foodRef">  Veg</label>
-                        <label for="id_foodRefNVeg"><input required type="radio" id="id_foodRefNVeg" name="foodRef">  Non Veg</label>
+                        <label for="id_foodRefVeg" class="mr-5"><input required type="radio" value="veg" id="id_foodRefVeg" name="foodRef">  Veg</label>
+                        <label for="id_foodRefNVeg"><input required type="radio" value="nveg" id="id_foodRefNVeg" name="foodRef">  Non Veg</label>
                       </label>
                     </div>
                   </div>
 
                   <div class="col-md-12 w3-margin-bottom ">
-                    <input type="submit" value="Submit" class="btn btn-primary btn-block">
+                    <button type="submit" id="register_userBtn" class="btn btn-primary btn-block">Submit</button>
                   </div>
+                  <div class="col-md-12">
+                    <ul style="list-style: none;padding: 5px" id="msgList">
+                      <li class="w3-text-green"><i class="fa fa-check"></i> Registration successfull.</li>
+                      <li class="w3-text-red"><i class="fa fa-remove"></i> Generating pass failed.</li>
+                    </ul>
+                 </div>
                 </div>
               </div>
             </form>
           </div>
         </div>
       </div>
-      
+
     </section>
     <!-- END section -->
+    <script type="text/javascript">
+      // ------------register user--------------
+      $(function () {
+        $("#register_userForm").submit(function () {
+          dataString = $("#register_userForm").serialize();
+          $('#msgList').html('');
 
+          $.ajax({
+            type: "POST",
+            url: BASE_URL+"user/registration/registerUser",
+            dataType : 'text',
+            data: dataString,
+            return: false, 
+            beforeSend: function(){
+              $("#register_userBtn").attr("disabled", true);
+              $('#register_userBtn').html('<i class="fa fa-circle-o-notch fa-spin w3-medium"></i> Registering. Please wait');
+            },
+            success: function(data){
+              $('#msgList').html(data);
+              $('#register_userBtn').removeAttr("disabled");
+              $('#register_userBtn').html('Submit');
+              // window.setTimeout(function() {
+              //   window.location.reload();
+              // }, 1500);
+            },
+            error:function(data){
+              $('#register_userBtn').removeAttr("disabled");
+              $('#msgList').html('<li class="w3-text-red"><i class="fa fa-remove"></i> Something went wrong. Please refresh the page and try once again.</li>');
+
+              $('#register_userBtn').html('Submit');
+              // window.setTimeout(function() {
+              //   $(".alert").fadeTo(500, 0).slideUp(500, function(){
+              //     $(this).remove(); 
+              //   });
+              // }, 5000);
+            }
+          });
+          return false;
+        });
+      });
+      // ------------register user--------------
+    </script>
     <script src="<?php echo base_url(); ?>assets/js/popper.min.js"></script>
     <!-- Bootstrap -->
     <script src="<?php echo base_url(); ?>assets/bootstrap/js/bootstrap.min.js"></script>
