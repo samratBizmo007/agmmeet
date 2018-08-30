@@ -27,20 +27,25 @@ class Registration extends CI_Controller {
 		);
 
 		// call to model function to save new user in db
-        $result = $this->user_model->registerUser($user_info);
-        if($result['status']=='200'){
-        	$this->load->library('ciqrcode');
-
-$params['data'] = $result['code'];
-$params['level'] = 'M';
-$params['size'] = 5;
-$params['savename'] = 'assets/images/tes.png';
-$this->ciqrcode->generate($params);
-
-echo '<img src="'.base_url().'assets/images/tes.png" />';
-        }
+		$result = $this->user_model->registerUser($user_info);
+		if($result['status']=='200'){
+			
+		}
 
 // print_r($result);
+	}
+
+	// generate qr code of unique code
+	public function generateQR($unique_code){
+		$this->load->library('ciqrcode');
+
+		$params['data'] = $unique_code;
+		$params['level'] = 'M';
+		$params['size'] = 5;
+		$params['savename'] = 'assets/images/tes.png';
+		$this->ciqrcode->generate($params);
+
+		echo '<img src="'.base_url().'assets/images/tes.png" />';
 	}
 
 }
