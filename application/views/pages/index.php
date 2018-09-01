@@ -51,15 +51,15 @@
         <div class="col-md">
           <!-- text based logo -->
           <div class="w3-center">
-            <a class="btn w3-padding-bottom w3-center" style="background-color: black;border:1px solid;border-color: white;border-radius: 0;padding:10px" href="#">
-              <img src="<?php echo base_url(); ?>assets/images/mea_logo.jpg" class="img" style="width: 170px;height: auto;"/>
+            <a class="btn w3-center" style="background-color: black;border:1px solid;border-color: white;border-radius: 0;padding:10px" href="#">
+              <img src="<?php echo base_url(); ?>assets/images/mea_logo.jpg" class="img img-responsive" style="width: 200px;height: auto;"/>
             </a>
             <p style="color: white">
               <br>
               Welcomes you for 
             </p>
-            <h2 class="heading mb-2 display-4 font-light probootstrap-animate">Annual Gathering Meet 2k18</h2>
-            <p class="mu-event-date-line probootstrap-animate" style="background-color: black;color: white;border:1px solid;border-color: white">30th June, 2018 | Pune, Maharashtra</p>
+            <h2 class="heading mb-2 display-4 font-light probootstrap-animate">Annual General Meet 2k18</h2>
+            <p class="mu-event-date-line probootstrap-animate" style="background-color: black;color: white;border:1px solid;border-color: white">8th September, 2018 <br> Siddhi Banquets, D.P. Road, Near Mhatre Bridge, Pune.</p>
           </div>         
           <br>
           <div class="w3-col l12 w3-text-white w3-center w3-padding-bottom probootstrap-animate">
@@ -113,10 +113,15 @@
                       <li class="w3-text-green"><i class="fa fa-check"></i> Registration successfull.</li>
                       <li class="w3-text-red"><i class="fa fa-remove"></i> Generating pass failed.</li>
                     </ul>
-                 </div>
+                  </div>
                 </div>
               </div>
+              <div class="container">
+              <div class="col-md-10 col-md-offset-1" id="qr_img"></div>
+            </div>
             </form>
+
+            
           </div>
         </div>
       </div>
@@ -141,7 +146,15 @@
               $('#register_userBtn').html('<i class="fa fa-circle-o-notch fa-spin w3-medium"></i> Registering. Please wait');
             },
             success: function(data){
-              $('#msgList').html(data);
+              var response=JSON.parse(data);
+              console.log(response);
+              if(response.status==true){
+                $('#msgList').append('<li class="w3-text-green"><i class="fa fa-check"></i> '+response.status_message+'</li>');
+                qrCode(response.code);
+              }
+              else{
+                $('#msgList').append('<li class="w3-text-red"><i class="fa fa-remove"></i> '+response.status_message+'</li>');
+              }
               $('#register_userBtn').removeAttr("disabled");
               $('#register_userBtn').html('Submit');
               // window.setTimeout(function() {
@@ -150,7 +163,7 @@
             },
             error:function(data){
               $('#register_userBtn').removeAttr("disabled");
-              $('#msgList').html('<li class="w3-text-red"><i class="fa fa-remove"></i> Something went wrong. Please refresh the page and try once again.</li>');
+              $('#msgList').html('<li class="w3-text-red"><i class="fa fa-remove"></i> Something went wrong with Registration. Please refresh the page and try once again.</li>');
 
               $('#register_userBtn').html('Submit');
               // window.setTimeout(function() {
@@ -164,6 +177,53 @@
         });
       });
       // ------------register user--------------
+
+      // genertae QR code
+        function qrCode(code){
+          $.ajax({
+            type: "POST",
+            url: BASE_URL+"user/registration/generateQR",
+            dataType : 'text',
+            data: {unique_code:code},
+            return: false, 
+            beforeSend: function(){
+              $("#register_userBtn").attr("disabled", true);
+              $('#register_userBtn').html('<i class="fa fa-circle-o-notch fa-spin w3-medium"></i> Generating Pass.');
+            },
+            success: function(data){
+              var response=JSON.parse(data);
+              console.log(response);
+              if(response.status==true){
+                $('#msgList').append('<li class="w3-text-green"><i class="fa fa-check"></i> '+response.status_message+'</li>');
+                $('#qr_img').html(response.ticket);
+                window.location.href=response.redirectToDownload;
+              }
+              else{
+                $('#msgList').append('<li class="w3-text-red"><i class="fa fa-remove"></i> '+response.status_message+'</li>');
+              }
+              $('#register_userBtn').removeAttr("disabled");
+              $('#register_userBtn').html('Submit');
+              // window.setTimeout(function() {
+              //   window.location.reload();
+              // }, 1500);
+            },
+            error:function(data){
+              $('#register_userBtn').removeAttr("disabled");
+              $('#msgList').html('<li class="w3-text-red"><i class="fa fa-remove"></i> Something went wrong with Generating Pass. Please refresh the page and try once again.</li>');
+
+              $('#register_userBtn').html('Submit');
+              // window.setTimeout(function() {
+              //   $(".alert").fadeTo(500, 0).slideUp(500, function(){
+              //     $(this).remove(); 
+              //   });
+              // }, 5000);
+            }
+          });
+          return false;
+        }
+      // genertae QR code ends
+
+      
     </script>
     <script src="<?php echo base_url(); ?>assets/js/popper.min.js"></script>
     <!-- Bootstrap -->

@@ -15,16 +15,16 @@ class User_model extends CI_Model {
          
         if ($this->db->query($sql)) {
               $id=$this->db->insert_id();
-              $code=base64_encode($name.'_'.$date.'_'.time().'_'.$id);
+              $code=base64_encode($name.'|'.$date.'|'.time().'|'.$id);
 
             $response = array(
-                'status' => 200, //---------insert db success code
+                'status' => true, //---------insert db success code
                 'code'  =>  $code,
                 'status_message' => 'Registration successfull.'
             );
         } else {
             $response = array(
-                'status' => 500, //---------db error code 
+                'status' => false, //---------db error code 
                 'status_message' => 'Registration Failed !'
             );
         }
