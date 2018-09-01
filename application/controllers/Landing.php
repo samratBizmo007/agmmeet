@@ -15,6 +15,7 @@ class Landing extends CI_Controller {
 	public function index()
 	{
 		$this->load->view('pages/index');
+		// $this->load->view('pages/scan/index.html');
 		//$this->load->view('includes/footer');
 	}
 }
