@@ -52,5 +52,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'landing';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
-$route['admin/products/viewproduct/(:any)'] = "admin/products/viewproduct/index/$1";
+$route['user/checkin/(:any)'] = "user/checkin/index/$1";
+$route['user/checkin/checkout/(:any)'] = "user/checkin/checkout/$1";
+// $route['admin/user/checkin/(:any)'] = "admin/user/checkin/index/$1";
+// $route['admin/user/checkin/checkout/(:any)'] = "admin/user/checkin/index/$1";
 
