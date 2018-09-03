@@ -217,7 +217,7 @@
             return: false, 
             beforeSend: function(){
               $("#register_userBtn").attr("disabled", true);
-              $('#register_userBtn').html('<i class="fa fa-circle-o-notch fa-spin w3-medium"></i> Registering. Please wait');
+              $('#register_userBtn').html('<i class="fa fa-circle-o-notch fa-spin w3-medium"></i> Registering');
             },
             success: function(data){
               var response=JSON.parse(data);

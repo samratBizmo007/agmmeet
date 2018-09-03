@@ -38,8 +38,8 @@ class Registration extends CI_Controller {
 		$codeArr=explode('|', base64_decode($unique_code,TRUE));
 		$name=str_replace(' ','_',$codeArr[0]);
 		$img_name=$name.'_'.$codeArr[3];
-		$file=base_url().'assets/images/'.$img_name.'.png';
-		$img_path='assets/images/'.$img_name.'.png';
+		$file=base_url().'assets/uploads/qrcodes/'.$img_name.'.png';
+		$img_path='assets/uploads/qrcodes/'.$img_name.'.png';
 		$idvalue=date('Ymd');
 
 
@@ -49,7 +49,7 @@ class Registration extends CI_Controller {
 		$params['data'] = base_url().'user/checkin/'.$unique_code;
 		$params['level'] = 'M';
 		$params['size'] = 5;
-		$params['savename'] = 'assets/images/'.$img_name.'.png';
+		$params['savename'] = 'assets/uploads/qrcodes/'.$img_name.'.png';
 		
 		$ticket='		
 		<h3 class="w3-padding-left"><i class="fa fa-qrcode"></i> AGM Pass </h3>
@@ -103,6 +103,7 @@ class Registration extends CI_Controller {
 		</div>    
 		</div>
 		</div>
+		
 
 		';
 		// echo '<img class="img img-responsive" src="'.base_url().'assets/images/'.$img_name.'.png" />';

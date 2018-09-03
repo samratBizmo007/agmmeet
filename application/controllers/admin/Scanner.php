@@ -8,7 +8,6 @@ class Scanner extends CI_Controller {
 		parent::__construct();
 
 		// load common model
-		$this->load->model('login_model');		
 	}
 
 	// main index function
