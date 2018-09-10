@@ -11,8 +11,15 @@ class Registration extends CI_Controller {
 		$this->load->model('user/user_model');		
 	}
 
+	public function downlaodAll(){
+// call to model function to save new user in db
+		$result = $this->user_model->getusers();
+		print_r(json_encode($result));
+	}
+
 	public function makeQR(){
 		extract($_POST);
+ // print_r($_POST);die();
 		$codeArr=explode('|', base64_decode($unique_code,TRUE));
 		$name=str_replace(' ','_',$codeArr[0]);
 		$img_name=$name.'_'.$codeArr[3];

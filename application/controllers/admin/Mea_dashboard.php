@@ -81,8 +81,8 @@ class Mea_dashboard extends CI_Controller {
 		$memNo=0;
 		$vegCount=0;
 		$nvegCount=0;
-		$freeCount=0;
-		$paidCount=0;
+		$male=0;
+		$female=0;
 		$net=0;
 
 		if($result['status']=='200'){
@@ -97,6 +97,15 @@ class Mea_dashboard extends CI_Controller {
 					$vegCount++;
 				}
 
+				if($row['gender']=='Male' && $row['gender']!=''){
+					$male++;
+				}
+				else{
+					if($row['gender']=='Female'){						
+					$female++;
+					}
+				}
+
 				
 			} 
 		}
@@ -107,6 +116,8 @@ class Mea_dashboard extends CI_Controller {
 		<p>
 		<label><u>Total Member Registered:</u></label> <span>'.$memNo.'</span><br>
 		<label><u>Total Checked In:</u></label> <span>'.$net.'</span><br><br>
+		<i><label>Male Members:</label> <span>'.$male.'</span></i><br>
+		<i><label>Female Members:</label> <span>'.$female.'</span></i><br>
 		<i><label>Veg Preferred Members:</label> <span>'.$vegCount.'</span></i><br>
 		<i><label>Non-Veg Preferred Members:</label> <span>'.$nvegCount.'</span></i><br>	
 		</p><hr><br>
@@ -117,7 +128,7 @@ class Mea_dashboard extends CI_Controller {
 		$pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
 
 		// column titles
-		$header = array('Sr.no', 'Member Name', 'Food Preference' , 'Checked In', 'Date');
+		$header = array('Sr.', 'Member Name', 'Gender' ,'Food' , 'Status', 'Date');
 
 		// Colors, line width and bold font
 		$pdf->SetFillColor(255, 0, 0);
@@ -126,7 +137,7 @@ class Mea_dashboard extends CI_Controller {
 		$pdf->SetLineWidth(0.3);
 		$pdf->SetFont('', 'B');
 		// Header
-		$w = array(15, 70, 35, 35, 35);
+		$w = array(10,75,25, 25, 25, 28);
 		$num_headers = count($header);
 		for($i = 0; $i < $num_headers; ++$i) {
 			$pdf->Cell($w[$i], 7, $header[$i], 1, 0, 'C', 1);
@@ -146,6 +157,7 @@ class Mea_dashboard extends CI_Controller {
 			$pdf->Cell($w[2], 6, 'N/A', 'LR', 0, 'C', $fill);
 			$pdf->Cell($w[3], 6, 'N/A', 'LR', 0, 'C', $fill);
 			$pdf->Cell($w[4], 6, 'N/A', 'LR', 0, 'C', $fill);
+			$pdf->Cell($w[5], 6, 'N/A', 'LR', 0, 'C', $fill);
 			$pdf->Ln();
 			$fill=!$fill;
 		}
@@ -156,6 +168,7 @@ class Mea_dashboard extends CI_Controller {
 				//cell height is 6 times the max number of cells
 				$food='VEG';
 				$checked='---';
+
 				if($row['foodPreference']=='nveg' && $row['foodPreference']!=''){
 					$food='NON-VEG';
 				}
@@ -164,9 +177,10 @@ class Mea_dashboard extends CI_Controller {
 				}
 				$pdf->Cell($w[0],6,$count.'.','LR', 0, 'C', $fill);
 				$pdf->Cell($w[1],6,$row['member_name'],'LR', 0, 'C', $fill);
-				$pdf->Cell($w[2],6,$food,'LR', 0, 'C', $fill);
-				$pdf->Cell($w[3],6,$checked,'LR', 0, 'C', $fill);
-				$pdf->Cell($w[4],6,$valid_date,'LR', 0, 'C', $fill);
+				$pdf->Cell($w[2],6,$row['gender'],'LR', 0, 'C', $fill);
+				$pdf->Cell($w[3],6,$food,'LR', 0, 'C', $fill);
+				$pdf->Cell($w[4],6,$checked,'LR', 0, 'C', $fill);
+				$pdf->Cell($w[5],6,$valid_date,'LR', 0, 'C', $fill);
 
 				$pdf->Ln();
 				$fill=!$fill;
@@ -204,7 +218,7 @@ class Mea_dashboard extends CI_Controller {
 // file creation 
 		$file = fopen('php://output', 'w');
 
-		$header = array("Member Name", "Food Preference", "Checked In", "Date");
+		$header = array("Member Name", "Gender", "Food Preference", "Checked In", "Date");
 		fputcsv($file, $header);
 		if($result['status']=='200'){
 			foreach ($usersData as $key => $line) {

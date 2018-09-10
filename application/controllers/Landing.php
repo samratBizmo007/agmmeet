@@ -17,6 +17,13 @@ class Landing extends CI_Controller {
 		if(isset($_COOKIE['agm_registeredUser']) && isset($_COOKIE['agm_registeredUser'])!=''){
 			$unique_code=$_COOKIE['agm_registeredUser'];
 
+			$cookie_agm= array(
+				'name' => 'agm_registeredUser',
+				'value' => $unique_code,
+				'expire' => '2592000'
+			);
+			$this->input->set_cookie($cookie_agm);
+
             // call to model function to get details of cookie reg user from db
 			$result['userCookie'] = $this->user_model->getUserDetails($unique_code);
 			// print_r($result);die();

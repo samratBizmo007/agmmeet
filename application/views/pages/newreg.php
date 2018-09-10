@@ -159,7 +159,7 @@
                 Welcomes you for 
               </p>
               <h2 class="heading mb-2 display-4 font-light probootstrap-animate">Annual General Meet 2018</h2>
-              <p class="mu-event-date-line probootstrap-animate" style="background-color: black;color: white;border:1px solid;border-color: white">8th September, 2018. Sharp 5pm <br> Siddhi Banquets, D.P. Road, Near Mhatre Bridge, Pune.</p>
+              <p class="mu-event-date-line probootstrap-animate" style="background-color: black;color: white;border:1px solid;border-color: white">Event Day <br> Siddhi Banquets, D.P. Road, Near Mhatre Bridge, Pune.</p>
             </div>         
             <br>
             <div class="w3-col l12 w3-text-white w3-center w3-padding-bottom probootstrap-animate">
@@ -175,7 +175,7 @@
           <div class="col-md probootstrap-animate">
             <form id="register_userForm" class="probootstrap-form">
               <div id="regForm">
-                <h3><i class="fa fa-edit"></i> Register Here !</h3>
+                <h3><i class="fa fa-edit"></i> Enroll new Memebers Here !</h3>
                 <br>
                 <div class="form-group">
                   <div class="row mb-3">
@@ -253,18 +253,7 @@
 
   <!-- END section -->
   <script type="text/javascript">
-    $( document ).ready(function() {
-      var deviceAgent = navigator.userAgent.toLowerCase();
-      var agentID = deviceAgent.match(/(iphone|ipod|ipad)/);
-      if (agentID) {
-        $('.downloadLink').addClass('w3-hide');
-      }
-      else{
-        $('.downloadLink').removeClass('w3-hide');
-      }
-
-    });
-
+    
       // ------------register user--------------
       $(function () {
         $("#register_userForm").submit(function () {
@@ -287,16 +276,15 @@
               //console.log(response);
               if(response.status==true){
                 $('#msgList').append('<li class="w3-text-green"><i class="fa fa-check"></i> '+response.status_message+'</li>');
-                qrCode(response.code);
               }
               else{
                 $('#msgList').append('<li class="w3-text-red"><i class="fa fa-remove"></i> '+response.status_message+'</li>');
               }
               $('#register_userBtn').removeAttr("disabled");
               $('#register_userBtn').html('Submit');
-              // window.setTimeout(function() {
-              //   window.location.reload();
-              // }, 1500);
+              window.setTimeout(function() {
+                window.location.reload();
+              }, 1500);
             },
             error:function(data){
               $('#register_userBtn').removeAttr("disabled");
@@ -304,10 +292,8 @@
 
               $('#register_userBtn').html('Submit');
               // window.setTimeout(function() {
-              //   $(".alert").fadeTo(500, 0).slideUp(500, function(){
-              //     $(this).remove(); 
-              //   });
-              // }, 5000);
+              //   window.location.reload();
+              // }, 2000);
             }
           });
           return false;
@@ -315,91 +301,7 @@
       });
       // ------------register user--------------
 
-      // genertae QR code
-      function qrCode(code){
-        $.ajax({
-          type: "POST",
-          url: BASE_URL+"user/registration/generateQR",
-          dataType : 'text',
-          data: {unique_code:code},
-          return: false, 
-          beforeSend: function(){
-            $("#register_userBtn").attr("disabled", true);
-            $('#register_userBtn').html('<i class="fa fa-circle-o-notch fa-spin w3-medium"></i> Generating Pass.');
-          },
-          success: function(data){
-            var response=JSON.parse(data);
-            //console.log(response);
-            if(response.status==true){
-              $('#msgList').append('<li class="w3-text-green"><i class="fa fa-check"></i> '+response.status_message+'</li>');
-              $('#qr_img').html(response.ticket);
-              $('#regForm').hide();
-              // $("#register_userForm :input").prop("disabled", true);
-              var deviceAgent = navigator.userAgent.toLowerCase();
-              var agentID = deviceAgent.match(/(iphone|ipod|ipad)/);
-              if (agentID) {
-                window.location.reload();
-              }
-              else{
-                window.location.href=response.redirectToDownload;
-              }
-            }
-            else{
-              $('#msgList').append('<li class="w3-text-red"><i class="fa fa-remove"></i> '+response.status_message+'</li>');
-            }
-            $('#register_userBtn').removeAttr("disabled");
-            $('#register_userBtn').html('Submit');
-              // window.setTimeout(function() {
-              //   window.location.reload();
-              // }, 1500);
-            },
-            error:function(data){
-              $('#register_userBtn').removeAttr("disabled");
-              $('#msgList').html('<li class="w3-text-red"><i class="fa fa-remove"></i> Something went wrong with Generating Pass. Please refresh the page and try once again.</li>');
-
-              $('#register_userBtn').html('Submit');
-              // window.setTimeout(function() {
-              //   $(".alert").fadeTo(500, 0).slideUp(500, function(){
-              //     $(this).remove(); 
-              //   });
-              // }, 5000);
-            }
-          });
-        return false;
-      }
-      // genertae QR code ends
-
-      // confirm reset cookie
-      function resetCookie(name) {
-        $.confirm({
-          title: '<h4 class="w3-text-orange"><i class="fa fa-warning"></i> Have you downloaded the pass of <b>'+name+'</b> ?</h4>',
-          type: 'orange',
-          content: 'Click "Confirm" button, if you have downloaded the previous  pass and want to register new member.',
-          buttons: {
-            confirm: function () {
-              $.ajax({
-                url: "<?php echo base_url(); ?>landing/resetCookie",
-                type: "POST",
-                cache: false,
-                success: function (html) {
-                  location.reload();
-                }
-              });
-            },
-            cancel: function () {
-              $('.downloadLink').addClass('w3-xlarge');
-
-              setTimeout(function(){
-                $('.downloadLink').removeClass('w3-xlarge');
-              }, 5000);
-
-            }
-          }
-        });
-
-      }
-      // confirm reset cookie ends
-      
+            
     </script>
     <script src="<?php echo base_url(); ?>assets/js/popper.min.js"></script>
     <!-- Bootstrap -->

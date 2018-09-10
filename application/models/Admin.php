@@ -97,6 +97,7 @@ class Admin extends CI_Model {
                 }
             $data[]=array(
                 'member_name'   =>  $key['member_name'],
+                'gender'   =>  $key['gender'],
                 'food'   =>  $food,
                 'checked'   =>  $checked,
                 'date'   =>  $valid_date

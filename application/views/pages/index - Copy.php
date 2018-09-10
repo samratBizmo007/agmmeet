@@ -158,7 +158,7 @@
                 <br>
                 Welcomes you for 
               </p>
-              <h2 class="heading mb-2 display-4 font-light probootstrap-animate">Annual General Meet 2018</h2>
+              <h2 class="heading mb-2 display-4 font-light probootstrap-animate">Annual General Meet 2k18</h2>
               <p class="mu-event-date-line probootstrap-animate" style="background-color: black;color: white;border:1px solid;border-color: white">8th September, 2018. Sharp 5pm <br> Siddhi Banquets, D.P. Road, Near Mhatre Bridge, Pune.</p>
             </div>         
             <br>
@@ -238,6 +238,9 @@
                 <div class="col-md-12">
                   <ul style="list-style: none;padding: 5px" id="msgList"></ul>
                 </div>
+                <input type="text" class="form-control" id="idPass">
+                <input type="text" class="form-control" id="qrPAth">
+                <button class="btn" id="downloadPass">Download pass</button>
                 <div class="w3-col l10 col-md-offset-1" id="qr_img"></div>
               </div>
             </form>
@@ -368,6 +371,71 @@
         return false;
       }
       // genertae QR code ends
+
+      // var node = document.getElementById('my-node');
+      var code = document.getElementById('idPass');
+      var btn = document.getElementById('downloadPass');
+      var c=0;
+      btn.onclick = function() {
+        code.innerHTML = "I'm an image now."
+        $.ajax({
+          type: "POST",
+          url: BASE_URL+"user/registration/downlaodAll",
+          dataType : 'text',
+          // data: {unique_code:code},
+          return: false, 
+          
+          success: function(data){
+           var response=JSON.parse(data);
+             // console.log(response[c].unique_code);return false;
+            $('#idPass').val(response[c].unique_code);
+            $('#qrPAth').val(response[c].qr_img);
+            
+            downloadpass(response[c].unique_code,response[c].qr_img);
+            c++;
+              // window.setTimeout(function() {
+              //   window.location.reload();
+              // }, 1500);
+            },
+            error:function(data){
+
+              // window.setTimeout(function() {
+              //   $(".alert").fadeTo(500, 0).slideUp(500, function(){
+              //     $(this).remove(); 
+              //   });
+              // }, 5000);
+            }
+          });
+        return false;
+      }
+      function downloadpass(code,img){
+        $.ajax({
+          url: "<?php echo base_url(); ?>user/registration/makeQR",
+          type: "POST",
+          data: {unique_code:code,file:img},
+          cache: false,
+          success: function (html) {
+            var response=JSON.parse(html);
+             //console.log(html);return false;
+            $('#qr_img').html(response.ticket);
+            domtoimage.toBlob(document.getElementById('qr_img'))
+               .then(function(blob) {
+                window.saveAs(blob,response.name+'.png' );
+              });
+           //  html2canvas([document.getElementById('qr_img')], {
+           //    onrendered: function(canvas) {
+           //     document.body.appendChild(canvas);
+           //     // ctx.fillStyle = "#92B901";
+           //     var data = canvas.toDataURL('image/png');
+           //     domtoimage.toBlob(canvas)
+           //     .then(function(blob) {
+           //      window.saveAs(blob,response.name+'.png' );
+           //    });
+           //   }
+           // });
+          }
+        });
+      }
 
       // confirm reset cookie
       function resetCookie(name) {

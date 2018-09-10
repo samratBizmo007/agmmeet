@@ -5,7 +5,14 @@ class User_model extends CI_Model {
         parent::__construct();
 
     }
+// -----------------------USER REGISTERATION MODEL----------------------//
+    public function getusers() {
+        $sql = "SELECT * FROM users_tab";
+        $resultnew = $this->db->query($sql);
+        return $resultnew->result_array();
+    }
 
+    //-------------------------------------------------------------//
 //-----------function for add skill in db-----------//
     public function registerUser($data)
     {

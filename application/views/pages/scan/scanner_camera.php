@@ -58,9 +58,9 @@
   </div>
   <br>
   <div class="container" id="ScanQr">
-    <div class="col-md-8 col-md-offset-2">
+    <div class="w3-col l8 col-md-offset-2">
       <div class="w3-col l12 w3-padding-small">
-        <div class="col-md-4">
+        <div class="w3-col l4 w3-padding-right">
           <h6><b>Cameras Found:</b></h6>
           <ul class="cameras" style="list-style: none;padding: 0">
             <li v-if="cameras.length === 0" class="w3-border w3-padding-top w3-text-red" style="padding: 5px"><p style="margin: 0"><i class="fa fa-times-rectangle-o"></i> No Camera Found</p></li>
@@ -72,9 +72,9 @@
             </li>
           </ul>
         </div>
-        <div class="col-md-8">
+        <div class="w3-col l8">
           <h6><b>QR Scanner:</b></h6>
-          <div class="w3-col l12 w3-border w3-padding-small w3-round w3-light-grey w3-margin-bottom">
+          <div class=" w3-border w3-padding-tiny w3-round w3-light-grey w3-margin-bottom">
             <video id="preview" style="width: 100%;height: auto;"></video>
           </div>
         </div>
